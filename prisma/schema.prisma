@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Blog {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String    @db.VarChar(255)
   content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
+  published Boolean   @default(false)
+  author    User      @relation(fields: [authorId], references: [id])
   authorId  Int
+  Comment   Comment[]
 }
 
 model Profile {
@@ -29,9 +30,20 @@ model Profile {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Blog[]
-  profile Profile?
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  username String
+  password String    @db.VarChar(255)
+  posts    Blog[]
+  profile  Profile?
+  Comment  Comment[]
+}
+
+model Comment {
+  id        Int    @id @default(autoincrement())
+  comment   String @db.VarChar(255)
+  blog      Blog   @relation(fields: [blogId], references: [id])
+  blogId    Int
+  commentBy User   @relation(fields: [userID], references: [id])
+  userID    Int
 }
