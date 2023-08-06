@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { prisma } from "../../prisma/prismaClient";
-// import bcrypt from "bcryptjs";
 import { IUserData } from "../controller/auth.controller/auth.controller";
+import { hashPassword } from "../utils/hasPassword";
 
 export class Auth {
   static async register(data: IUserData): Promise<string> {
@@ -12,7 +12,6 @@ export class Auth {
       },
     });
     if (!user) {
-      // data.password = bcrypt.hashSync(data.password, 8);
       await prisma.user.create({
         data,
       });
